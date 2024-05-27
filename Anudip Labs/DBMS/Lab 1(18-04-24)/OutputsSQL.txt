@@ -1,0 +1,153 @@
+Question:
+
+1.Consider two tables, customers and orders, with the following structures:
+
+Customers Table:
+
+customer_id (Primary Key)
+
+first_name
+
+Last_name
+
+Orders Table:
+
+order_id (Primary Key)
+
+customer_id (Foreign Key)
+
+order_date
+
+Total_amount
+
+Write an SQL query to retrieve the first and last names of customers along with the
+
+order date and total amount of their orders. Use an INNER JOIN to connect the two
+
+tables.
+
+
+Queries:
+
+create database CustomerService;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| anudip             |
+| customerservice    |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.01 sec)
+
+mysql> use customerservice;
+Database changed
+
+mysql> create table customers(customer_Id varchar(5) primary key,FirstName varchar(10) not null,LastName varchar(10) not null);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> create table orders(order_id varchar(5) primary key,customer_id varchar(5),order_date datetime not null,total_amount varchar(10),foreign key (customer_id) references customers(customer_id));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> show tables;
++---------------------------+
+| Tables_in_customerservice |
++---------------------------+
+| customers                 |
+| orders                    |
++---------------------------+
+2 rows in set (0.00 sec)
+
+desc customers;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| customer_Id | varchar(5)  | NO   | PRI | NULL    |       |
+| FirstName   | varchar(10) | NO   |     | NULL    |       |
+| LastName    | varchar(10) | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc orders;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| order_id     | varchar(5)  | NO   | PRI | NULL    |       |
+| customer_id  | varchar(5)  | YES  | MUL | NULL    |       |
+| order_date   | datetime    | NO   |     | NULL    |       |
+| total_amount | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+ insert into customers values(101,'Aarti','Sherla');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from customerservice;
+ERROR 1146 (42S02): Table 'customerservice.customerservice' doesn't exist
+mysql> select * from customers;
++-------------+-----------+----------+
+| customer_Id | FirstName | LastName |
++-------------+-----------+----------+
+| 101         | Aarti     | Sherla   |
++-------------+-----------+----------+
+1 row in set (0.00 sec)
+
+mysql>  insert into customers values(102,'Shrutika','Sambharam');
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into customers values(103,'Monika','Meragu');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from customers;
++-------------+-----------+-----------+
+| customer_Id | FirstName | LastName  |
++-------------+-----------+-----------+
+| 101         | Aarti     | Sherla    |
+| 102         | Shrutika  | Sambharam |
+| 103         | Monika    | Meragu    |
++-------------+-----------+-----------+
+3 rows in set (0.00 sec)
+
+ insert into orders (order_id, order_date, total_amount) VALUES (201, '2022-04-23', 100);
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into orders (order_id, order_date, total_amount) VALUES (202, '11-08-23', 200);
+Query OK, 1 row affected (0.02 sec)
+
+mysql>  insert into orders (order_id, order_date, total_amount) VALUES (203, '8-12-23', 300);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from orders;
++----------+-------------+---------------------+--------------+
+| order_id | customer_id | order_date          | total_amount |
++----------+-------------+---------------------+--------------+
+| 201      | 101         | 2022-04-23 00:00:00 | 100          |
+| 202      | 102         | 2011-08-23 00:00:00 | 200          |
+| 203      | 103         | 0008-12-23 00:00:00 | 300          |
++----------+-------------+---------------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select customers.FirstName,customers.LastName, Orders.order_date, orders.total_amount from customers inner join orders on customers.customer_Id = orders.customer_id;
++-----------+-----------+---------------------+--------------+
+| FirstName | LastName  | order_date          | total_amount |
++-----------+-----------+---------------------+--------------+
+| Aarti     | Sherla    | 2022-04-23 00:00:00 | 100          |
+| Shrutika  | Sambharam | 2011-08-23 00:00:00 | 200          |
+| Monika    | Meragu    | 0008-12-23 00:00:00 | 300          |
++-----------+-----------+---------------------+--------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+

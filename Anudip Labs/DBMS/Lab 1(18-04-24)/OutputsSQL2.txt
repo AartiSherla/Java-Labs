@@ -1,0 +1,175 @@
+Question:
+
+2.Consider two tables, departments and employees, with the following structures:
+
+Departments Table:
+
+department_id (Primary Key)
+
+department_name
+
+Employees Table:
+
+employee_id (Primary Key)
+
+first_name
+
+last_name
+
+department_id (Foreign Key)
+
+Write an SQL query to retrieve a list of all departments and the names of employees
+
+who belong to each department. Use a LEFT JOIN to include departments that have no
+
+employees.
+
+
+Queries:
+
+mysql> create database company;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| anudip             |
+| company            |
+| customerservice    |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use company;
+Database changed
+
+mysql> create table departments(department_Id varchar(10) primary key,department_name varchar(100) not null);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> create table employees(employee_Id varchar(10) primary key,FirstName varchar(50) not null,LastName varchar(50) not null,department_Id varchar(10),foreign key (department_Id) references departments(department_Id));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_company |
++-------------------+
+| departments       |
+| employees         |
++-------------------+
+2 rows in set (0.00 sec)
+
+ desc departments;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| department_Id   | varchar(10)  | NO   | PRI | NULL    |       |
+| department_name | varchar(100) | NO   |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc employees;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| employee_Id   | varchar(10) | NO   | PRI | NULL    |       |
+| FirstName     | varchar(50) | NO   |     | NULL    |       |
+| LastName      | varchar(50) | NO   |     | NULL    |       |
+| department_Id | varchar(10) | YES  | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into departments values(101,'HR');
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into departments values(102,'Finance');
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into departments values(103,'IT');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into departments values(101,'HR');
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into departments values(102,'Finance');
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into departments values(103,'IT');
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into departments values(104,'Development');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from departments;
++---------------+-----------------+
+| department_Id | department_name |
++---------------+-----------------+
+| 101           | HR              |
+| 102           | Finance         |
+| 103           | IT              |
+| 104           | Development     |
++---------------+-----------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into employees values(201, 'Radha','Vadlakonda',101);
+Query OK, 1 row affected (0.05 sec)
+
+mysql>  insert into employees values(202, 'Akshita','Patil',102);
+Query OK, 1 row affected (0.04 sec)
+
+mysql>  insert into employees values(203, 'Vaishnavi','More',103);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employees values(204, 'Smita','Jadhav',Null);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from employees;
++-------------+-----------+------------+---------------+
+| employee_Id | FirstName | LastName   | department_Id |
++-------------+-----------+------------+---------------+
+| 201         | Radha     | Vadlakonda | 101           |
+| 202         | Akshita   | Patil      | 102           |
+| 203         | Vaishnavi | More       | 103           |
+| 204         | Smita     | Jadhav     | NULL          |
++-------------+-----------+------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select departments.department_Id,departments.department_name,employees.FirstName,employees.LastName from departments left join employees on departments.department_Id = employees.department_Id;
++---------------+-----------------+-----------+------------+
+| department_Id | department_name | FirstName | LastName   |
++---------------+-----------------+-----------+------------+
+| 101           | HR              | Radha     | Vadlakonda |
+| 102           | Finance         | Akshita   | Patil      |
+| 103           | IT              | Vaishnavi | More       |
+| 104           | Development     | NULL      | NULL       |
++---------------+-----------------+-----------+------------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
